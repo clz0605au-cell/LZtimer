@@ -3,7 +3,9 @@
 const KEY='lztimer-settings-v1',core=window.LZSettingsCore;
 let saved;try{saved=JSON.parse(localStorage.getItem(KEY))}catch{}let config=core.normalizeSettings(saved);
 const page=document.querySelector('script[src="competition.mjs"]')?'competition':'practice';
-const translations=`Penalty|罚时|罰時
+const translations=`Saving…|正在保存…|正在儲存…
+Save failed|保存失败|儲存失敗
+Penalty|罚时|罰時
 Touch gestures|触控手势|觸控手勢
 Swipe right|单指右滑|單指右滑
 Swipe left|单指左滑|單指左滑
@@ -259,9 +261,9 @@ return source;
 }
 const textSources=new WeakMap(),attributeSources=new WeakMap();let observer=null,initialized=false;
 const ignored='[data-user-content],script,style,textarea,#timer,#competitionTimer,#manualPreview,#manualValue,#scramble,#competitionScramble,#solveAlg,.solve-alg,.alg,twisty-player';
-function translateText(node){if(node.parentElement?.closest(ignored))return;const current=node.nodeValue;let item=textSources.get(node);if(!item||current!==item.last)item={source:current,last:current};const translated=t(item.source);if(current!==translated)node.nodeValue=translated;item.last=translated;textSources.set(node,item)}
+function translateText(node){if(node.parentElement?.id==='timer'||node.parentElement?.id==='competitionTimer')return;if(node.parentElement?.closest(ignored))return;const current=node.nodeValue;let item=textSources.get(node);if(!item||current!==item.last)item={source:current,last:current};const translated=t(item.source);if(current!==translated)node.nodeValue=translated;item.last=translated;textSources.set(node,item)}
 function translateAttributes(element){let all=attributeSources.get(element)||{};for(const key of ['title','aria-label','placeholder']){if(!element.hasAttribute(key))continue;let current=element.getAttribute(key),item=all[key];if(!item||current!==item.last)item={source:current,last:current};let value=t(item.source);if(current!==value)element.setAttribute(key,value);item.last=value;all[key]=item}attributeSources.set(element,all)}
-function localize(root=document.body){if(!root)return;if(root.nodeType===3){translateText(root);return}if(root.nodeType!==1)return;translateAttributes(root);for(const el of root.querySelectorAll('[title],[aria-label],[placeholder]'))translateAttributes(el);let walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(walker.nextNode())translateText(walker.currentNode)}
+function localize(root=document.body){if(!root)return;if(root.id==='timer'||root.id==='competitionTimer')return;if(root.nodeType===3){translateText(root);return}if(root.nodeType!==1)return;translateAttributes(root);for(const el of root.querySelectorAll('[title],[aria-label],[placeholder]'))translateAttributes(el);let walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(walker.nextNode())translateText(walker.currentNode)}
 function observe(){observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['title','aria-label','placeholder']})}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(config))}catch{}}
 const colorProperties=['--bg','--panel','--line','--ink','--text','--muted','--green','--soft','--accent'];
