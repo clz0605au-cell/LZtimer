@@ -3,7 +3,10 @@
 const KEY='lztimer-settings-v1',core=window.LZSettingsCore;
 let saved;try{saved=JSON.parse(localStorage.getItem(KEY))}catch{}let config=core.normalizeSettings(saved);
 const page=document.querySelector('script[src="competition.mjs"]')?'competition':'practice';
-const translations=`Edit time|修改时间|修改時間
+const translations=`Missing file: overview-custom.js. Upload it beside index.html.|缺少 overview-custom.js，请将它上传到 index.html 所在目录。|缺少 overview-custom.js，請將它上傳到 index.html 所在目錄。
+Saved results could not be loaded.|无法读取已保存的成绩。|無法讀取已儲存的成績。
+Unable to start LZtimer.|LZtimer 启动失败。|LZtimer 啟動失敗。
+Edit time|修改时间|修改時間
 Time before penalty|罚时前的原始时间|罰時前的原始時間
 Enter a valid time.|请输入有效时间。|請輸入有效時間。
 Time updated.|成绩已更新。|成績已更新。
