@@ -3,7 +3,17 @@
 const KEY='lztimer-settings-v1',core=window.LZSettingsCore;
 let saved;try{saved=JSON.parse(localStorage.getItem(KEY))}catch{}let config=core.normalizeSettings(saved);
 const page=document.querySelector('script[src="competition.mjs"]')?'competition':'practice';
-const translations=`Saving…|正在保存…|正在儲存…
+const translations=`Edit time|修改时间|修改時間
+Time before penalty|罚时前的原始时间|罰時前的原始時間
+Enter a valid time.|请输入有效时间。|請輸入有效時間。
+Time updated.|成绩已更新。|成績已更新。
+Customize overview|自定义概览|自訂概覽
+Average of|平均次数|平均次數
+Add|添加|新增
+Done|完成|完成
+Enter a whole number from 3 to 100000.|请输入 3 至 100000 的整数。|請輸入 3 至 100000 的整數。
+Unable to calculate averages.|无法计算平均值。|無法計算平均值。
+Saving…|正在保存…|正在儲存…
 Save failed|保存失败|儲存失敗
 Penalty|罚时|罰時
 Touch gestures|触控手势|觸控手勢
