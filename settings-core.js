@@ -1,0 +1,7 @@
+(function(root){
+  'use strict';
+  function parseManualTime(raw){const digits=String(raw).trim();if(!/^\d{1,9}$/.test(digits))return null;return Number(digits)/100}
+  function normalizeSettings(raw){const v=raw&&typeof raw==='object'?raw:{};return{language:['en','zh-Hans','zh-Hant'].includes(v.language)?v.language:'en',inputMode:v.inputMode==='manual'?'manual':'timer',competitionPreparation:[90,120,150,180].includes(Number(v.competitionPreparation))?Number(v.competitionPreparation):120,colors:{practice:/^#[0-9a-f]{6}$/i.test(v.colors?.practice)?v.colors.practice:null,competition:/^#[0-9a-f]{6}$/i.test(v.colors?.competition)?v.colors.competition:null}}}
+  function paletteFor(hex){const rgb=hex.slice(1).match(/../g).map(x=>parseInt(x,16)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);const light=.2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]>.3;return{light,ink:light?'#202733':'#f3f6ff',muted:light?'#636d7d':'#b4c3da',panel:light?'rgba(255,255,255,.74)':'rgba(17,27,47,.64)',line:light?'rgba(18,28,45,.10)':'rgba(210,225,255,.16)',accent:light?'#285896':'#bed5ff',green:light?'#1f735d':'#a0dec4',soft:light?'rgba(25,65,110,.07)':'rgba(175,205,255,.11)'}}
+  const api={parseManualTime,normalizeSettings,paletteFor};root.LZSettingsCore=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
+})(globalThis);
