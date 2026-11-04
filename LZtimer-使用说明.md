@@ -1,11 +1,13 @@
-# LZtimer
+# LZtimer — 完整性能优化版
 
-完整静态网站源码，无需构建或 API 密钥。
+静态网站源码，无构建步骤，无需 API 密钥。解压后在本文件夹运行 `python3 -m http.server 8765`，浏览器打开 http://localhost:8765/ 。公共发布时上传全部网页文件到静态托管服务根目录，比赛页为 competition.html。
 
-本地运行：解压后在此文件夹执行 `python3 -m http.server 8765`，打开 http://localhost:8765/ 。不要直接双击 HTML。
+新增 performance-core.js：WeakMap 并行平均缓存，不修改成绩对象或存储格式。首次读取建立缓存；新增仅计算最新窗口；罚时与删除仅重算受影响窗口。概览总平均及最佳值同样缓存；编辑或删除时重新汇总最佳值，不重算无关窗口。
 
-公共部署：将所有网页文件上传到静态托管服务根目录。入口 index.html，比赛页面 competition.html。若需要 /competition 路径，请设置该路径映射到 competition.html。
+历史列表采用固定 42px 行高的 50 条虚拟窗口；顶部新增保留已有行节点。分析图表仅在弹窗打开时渲染；超过 500 个成绩下采样到 500 点，保留首尾与原始序号，原始统计、排名及导出使用完整数据。图表关闭动画。
 
-成绩和设置保存在各自浏览器 localStorage，不会跨域名或跨设备同步。迁移前请导出成绩，再到新网站导入。此包不包含个人成绩、访问凭据或 Sites 项目标识。
+计时使用 performance.now 与 requestAnimationFrame；仅厘秒变化时写入缓存的时间 DOM 引用。保存合并到 requestIdleCallback（不支持则 setTimeout），计时期间推迟存储，pagehide 时补写。浏览器强制崩溃仍可能丢失尚未写入的最新操作。
 
-运行时需要联网加载 CDN 上的图表、图标、样式及 cubing 打乱和预览依赖，并非完全离线版。AI 导入使用浏览器本地 LanguageModel 能力，不可用时回退到格式解析。
+现有 lztimer-v1、lztimer-competition-v1 及设置键保持兼容。成绩仍保存在各浏览器 localStorage；跨域迁移前请导出再导入。文件包不含个人成绩或凭据。需要联网加载外部 CDN 依赖，并非完整离线版。
+
+验证：平均值与原算法逐项对照、历史罚时/删除、10,000 条缓存基准、触控及比赛规则、CSV/JSON 回归、浏览器虚拟滚动和分析弹窗。基准是统计核心耗时，不代表各设备实际帧率保证。
