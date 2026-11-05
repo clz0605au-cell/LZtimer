@@ -2,8 +2,9 @@
 'use strict';
 const KEY='lztimer-settings-v1',core=window.LZSettingsCore;
 let saved;try{saved=JSON.parse(localStorage.getItem(KEY))}catch{}let config=core.normalizeSettings(saved);
-const page=document.querySelector('script[src="competition.mjs"]')?'competition':'practice';
-const translations=`Missing file: overview-custom.js. Upload it beside index.html.|缺少 overview-custom.js，请将它上传到 index.html 所在目录。|缺少 overview-custom.js，請將它上傳到 index.html 所在目錄。
+const page=document.querySelector('#competitionStage')||document.querySelector('script[src^="competition.mjs"]')?'competition':'practice';
+const translations=`Discard this round? All solves from this round will be deleted and excluded from statistics.|放弃本轮？本轮所有成绩将被删除，且不计入统计。|放棄本輪？本輪所有成績將被刪除，且不計入統計。
+Missing file: overview-custom.js. Upload it beside index.html.|缺少 overview-custom.js，请将它上传到 index.html 所在目录。|缺少 overview-custom.js，請將它上傳到 index.html 所在目錄。
 Saved results could not be loaded.|无法读取已保存的成绩。|無法讀取已儲存的成績。
 Unable to start LZtimer.|LZtimer 启动失败。|LZtimer 啟動失敗。
 Edit time|修改时间|修改時間
@@ -273,7 +274,7 @@ if(value.includes(' · '))return prefix+value.split(' · ').map(t).join(' · ')+
 return source;
 }
 const textSources=new WeakMap(),attributeSources=new WeakMap();let observer=null,initialized=false;
-const ignored='[data-user-content],script,style,textarea,#timer,#competitionTimer,#manualPreview,#manualValue,#scramble,#competitionScramble,#solveAlg,.solve-alg,.alg,twisty-player';
+const ignored='[data-user-content],#session option,#manageGroupSelect option,script,style,textarea,#timer,#competitionTimer,#manualPreview,#manualValue,#scramble,#competitionScramble,#solveAlg,.solve-alg,.alg,twisty-player';
 function translateText(node){if(node.parentElement?.id==='timer'||node.parentElement?.id==='competitionTimer')return;if(node.parentElement?.closest(ignored))return;const current=node.nodeValue;let item=textSources.get(node);if(!item||current!==item.last)item={source:current,last:current};const translated=t(item.source);if(current!==translated)node.nodeValue=translated;item.last=translated;textSources.set(node,item)}
 function translateAttributes(element){let all=attributeSources.get(element)||{};for(const key of ['title','aria-label','placeholder']){if(!element.hasAttribute(key))continue;let current=element.getAttribute(key),item=all[key];if(!item||current!==item.last)item={source:current,last:current};let value=t(item.source);if(current!==value)element.setAttribute(key,value);item.last=value;all[key]=item}attributeSources.set(element,all)}
 function localize(root=document.body){if(!root)return;if(root.id==='timer'||root.id==='competitionTimer')return;if(root.nodeType===3){translateText(root);return}if(root.nodeType!==1)return;translateAttributes(root);for(const el of root.querySelectorAll('[title],[aria-label],[placeholder]'))translateAttributes(el);let walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(walker.nextNode())translateText(walker.currentNode)}
