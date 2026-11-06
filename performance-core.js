@@ -11,6 +11,6 @@ function edit(a,index){g.LZOverview?.invalidate(a,index);const c=ensure(a);for(l
 function remove(a,index){g.LZOverview?.invalidate(a,index,true);const c=caches.get(a);if(!c)return;c.rows.splice(index,1);for(let i=index;i<Math.min(a.length,index+99);i++)c.rows[i]=entry(a,i);rebuildSummary(a,c)}
 function series(a,n){const c=ensure(a),k=metrics.indexOf(n);return c.rows.map(r=>r[k])}
 function sampleIndices(length,limit=500){if(length<=limit)return Array.from({length},(_,i)=>i);return Array.from({length:limit},(_,i)=>Math.round(i*(length-1)/(limit-1)))}
-async function prepare(a){if(caches.get(a)?.rows.length===a.length)return;for(let end=1000;end<a.length+1000;end+=1000){ensure(a,end);await new Promise(resolve=>setTimeout(resolve,0))}}
+async function prepare(a){if(caches.get(a)?.rows.length===a.length)return;for(let end=(caches.get(a)?.rows.length||0)+1000;end<a.length+1000;end+=1000){ensure(a,end);await new Promise(resolve=>setTimeout(resolve,0))}}
 g.LZPerf={prepare,ensure,edit,remove,series,average,value,metrics,sampleIndices};
 })(typeof window==='undefined'?globalThis:window);

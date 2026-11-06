@@ -3,7 +3,12 @@
 const KEY='lztimer-settings-v1',core=window.LZSettingsCore;
 let saved;try{saved=JSON.parse(localStorage.getItem(KEY))}catch{}let config=core.normalizeSettings(saved);
 const page=document.querySelector('#competitionStage')||document.querySelector('script[src^="competition.mjs"]')?'competition':'practice';
-const translations=`Discard this round? All solves from this round will be deleted and excluded from statistics.|放弃本轮？本轮所有成绩将被删除，且不计入统计。|放棄本輪？本輪所有成績將被刪除，且不計入統計。
+const translations=`Import saved. Reload the page to refresh results.|导入已保存，请刷新页面更新显示。|匯入已儲存，請重新整理頁面更新顯示。
+Current group|当前分组|目前分組
+Imported solves are added to this group. Existing results are kept.|导入成绩将追加到此分组，原有成绩会保留。|匯入成績將加入此分組，原有成績會保留。
+The destination group is no longer available. Reopen Import.|目标分组已不可用，请重新打开导入。|目標分組已無法使用，請重新開啟匯入。
+Import failed. Your existing results are unchanged. Try again.|导入失败，原有成绩未改变，请重试。|匯入失敗，原有成績未變更，請重試。
+Discard this round? All solves from this round will be deleted and excluded from statistics.|放弃本轮？本轮所有成绩将被删除，且不计入统计。|放棄本輪？本輪所有成績將被刪除，且不計入統計。
 Missing file: overview-custom.js. Upload it beside index.html.|缺少 overview-custom.js，请将它上传到 index.html 所在目录。|缺少 overview-custom.js，請將它上傳到 index.html 所在目錄。
 Saved results could not be loaded.|无法读取已保存的成绩。|無法讀取已儲存的成績。
 Unable to start LZtimer.|LZtimer 启动失败。|LZtimer 啟動失敗。
